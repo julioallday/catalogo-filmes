@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./css/style.css">
+        <title>Catálogo de filmes</title>
+
+    </head>
+
+    <body>
+        <main>
+            <section class="cadastro">
+                <h2 class="tamanho-fonte-titulo">Adicionar filme</h2>
+                <div class="input">
+                    <input type="text" name="titulo" id="titulo" placeholder="título">
+                    <input type="text" name="imagem" id="imagem" placeholder="Imagem url (opcional)">
+                </div>
+                <div class="input">
+                    <input type="number" name="nota" id="nota" placeholder="nota">
+                    <input type="number" name="duracao" id="duracao" placeholder="duração">
+                </div>
+                <div class="botao-cadastrar">
+                    <a id="botao-cadastro"><span>Cadastrar</span></a>
+                </div>
+            </section>
+            <section class="pesquisa">
+                <div class="pesquisa-titulo">
+                    <h2 class="tamanho-fonte-titulo">Filmes</h2>
+                    <p>total de <span id="total-assistido">0</span> minutos assistidos</p>
+                </div>
+                <div class="pesquisar-input">
+                    <input type="text" name="pesquisa" id="pesquisa">
+                    <a id="botao-pesquisa">Pesquisar</a>
+                </div>
+            </section>
+            <section class="listagem" id="listagem">
+                <!-- cards dinamicos -->
+            </section>
+        </main>
+        <script type="module" src="./js/main.js">
+        </script>
+    </body>
+</html>
