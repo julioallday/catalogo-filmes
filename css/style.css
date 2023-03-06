@@ -23,7 +23,11 @@ section {
   border-radius: 4px;
   padding: 10px;
   margin: 30px;
-  min-width: 300px;
+  min-width: 200px;
+  min-height: 200px;
+}
+section div{
+  margin: 0 auto;
 }
 h2 {
   width: fit-content;
@@ -35,47 +39,51 @@ ul {
   display: grid;
   grid-template-columns: 1fr;
 }
+li {
+  list-style: none;
+}
+.input{
+  margin: 0 auto;
+  width: 10rem;
+  position: relative;
+  height: 120px;
+}
+.cadastro{
+  max-width: 350px;
+  max-height: 200px;
+  margin: 0 auto;
+}
+.pesquisa{
+  max-width: 500px;
+  margin: 20px auto;
+}
+.pesquisa a, .cadastro a {
+  background-color: var(--corFundo);
+  padding: 5px;
+  margin: 20px;
+  border: 1px solid var(--bordas);
+  border-radius: 8px;
+  
+}
+.pesquisa a:active, .cadastro a:active {
+  background-color: var(--corFonte);
+  
+}
+
 
 @media only screen and (min-width: 660px) {
   ul {
     grid-template-columns: repeat(3, 0.5fr);
   }
-}
 
-li {
-  list-style: none;
-}
-
-.input {
-  width: 180px;
-  margin: 0 auto;
-}
-
-@media only screen and (min-width: 660px) {
-  .cadastro {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-  }
-  .cadastro div {
-    max-width: 180px;
-    margin: 20px auto;
-  }
-  .pesquisa {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
-  .pesquisa-titulo {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 20px;
-  }
   .pesquisa-titulo p {
     text-align: center;
     height: fit-content;
+  }
+}
+@media only screen and (min-width: 1340px) {
+  ul {
+    grid-template-columns: repeat(4, 0.5fr);
   }
 }
 
@@ -85,7 +93,6 @@ li {
   max-width: fit-content;
   max-height: fit-content;
   height: fit-content;
-  margin: 10px auto;
 }
 
 .card {
@@ -100,23 +107,61 @@ li {
   padding: 10px;
   border: 1px solid var(--bordas);
   border-radius: 8px;
+  position: relative;
 }
 
 .imagem {
-  min-width: 130px;
+  min-width: 200px;
+  height: 177px;
+  background-color: #000000;
+  display: flex;
+  border-radius: 8px;
+  opacity: 1;
+  transition: 0.5s ease;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
+.card:hover .imagem {
+  opacity: 1;
+}
+.imagem img {
+  opacity: 1;
+  transition: 0.5s ease;
+  backface-visibility: hidden;
+  max-width: 100%;
+  max-height: 200px;
+  margin: 2px auto;
+}
+.card:hover img {
+  opacity: 0.3;
+  transition: 0.5s ease;
+  backface-visibility: hidden;
+  max-width: 100%;
+  max-height: 200px;
+  margin: 2px auto;
 }
 
 .informacoes {
-    width: 80%;
-    
+  position: absolute;
+  max-width: 200px;
+  opacity: 0.3;
+  bottom: 50%;
+  left: 50%;
+  transform: translateY(50%) translateX(-50%);
 }
-.informacoes .titulo{
-    display: flex;
-    justify-content: center;
-    max-height: 8rem;
+.card:hover .informacoes {
+  transition-duration: 800ms;
+  opacity: 0.8;
+}
+.informacoes .titulo {
+  display: flex;
+  justify-content: center;
+  max-height: 8rem;
 }
 .informacoes p {
-
   max-width: 100%;
   height: 50px;
   text-overflow: ellipsis;
@@ -126,7 +171,6 @@ li {
   line-height: 1.6em;
   max-height: 8em; /* aqui vc controla a altura da caixa de texto */
   text-align: center;
-
 }
 
 .detalhes {
@@ -154,6 +198,11 @@ li {
   max-height: 30px;
   width: 30px;
 }
+.botoes {
+  position: absolute;
+  top: 79%;
+  left: 23%;
+}
 a:active {
   background-color: var(--corFonte);
   color: var(--corFundo);
@@ -163,7 +212,7 @@ input {
   border-radius: 4px;
   width: 150px;
   height: 20px;
-  margin: 5px;
+  margin: 0 5px;
 }
 .botoes {
   display: flex;
@@ -171,4 +220,7 @@ input {
 }
 .favoritou {
   background-color: red;
+}
+.botao-cadastrar{
+  width: 68%;
 }

@@ -7,8 +7,9 @@ import { componenteSvgNaoAssistido } from "../componentes/svgNaoAssistido.js";
 import { limparInputs } from "../utils/limpaInputs.js";
 import { registraInformacaoStorage } from "../utils/setStorage.js";
 import { somaMinutosAssistidos } from "./calculo.js";
+import { imagemDinamica } from "../servicos/imagensServico.js";
 
-export const listarFilmes = () => {
+export const listarFilmes = (filmes) => {
   const section = document.getElementById("listagem");
   section.innerHTML = "";
   const ul = document.createElement("ul");
@@ -74,7 +75,10 @@ export const mostrarTela = () => {
   botoesObj.cadastrar.onclick = cadastrarFilme;
 
   inputsObj.pesquisa.addEventListener("input", () => {
-    const filmesEncontrados = pesquisarFilmes();
+    const filmesEncontrados = pesquisarFilmes(
+      filmes,
+      document.getElementById("pesquisa").value
+    );
     const encontrouAlgumFilme = filmesEncontrados[0] ? true : false;
     if (!encontrouAlgumFilme) {
       alert("Não foi encontrado nenhum filme com esse titulo");
@@ -85,7 +89,10 @@ export const mostrarTela = () => {
       }, 500);
     }
   });
-  botoesObj.pesquisar.addEventListener("click", pesquisarFilmes);
+  botoesObj.pesquisar.addEventListener(
+    "click",
+    pesquisarFilmes(filmes, document.getElementById("pesquisa").value)
+  );
   listarFilmes(filmes);
 };
 
@@ -97,6 +104,9 @@ export const assistir = (element, index) =>
       somaMinutosAssistidos();
       registraInformacaoStorage("filmes", filmes);
       listarFilmes(filmes);
+      console.log(
+        `Você ${element.assistido ? "assistiu" : "deixou de assistir"} o filme ${element.titulo}`
+      );
     });
 
 export const favoritar = (element, index) => {
@@ -113,47 +123,51 @@ export const favoritar = (element, index) => {
       element.favorito = !element.favorito;
     }
     console.log(
-      `Filme ${index}`,
-      `${element.favorito ? "foi curtido" : "foi descurtido"}`
+      `Você ${element.favorito ? "curtiu" : "deixou de curtir"} o filme ${element.titulo}`
     );
     registraInformacaoStorage("filmes", filmes);
     listarFilmes(filmes);
   });
 };
 
-export const cadastrarFilme = () => {
+export async function cadastrarFilme() {
   const tituloValido = validaTitulo(inputsObj.titulo.value);
   const duracaoMaximaUltrapassada = Number(inputsObj.duracao.value) > 400;
+
   if (!tituloValido) {
     alert("Já possue um filme com o mesmo título!");
   } else if (duracaoMaximaUltrapassada) {
     alert("Duração máxima ultrapassada!");
     limparInputs(inputsObj.duracao);
   } else {
+    const dadosFilmeDinamico = imagemDinamica(
+      document.getElementById("titulo").value
+    );
+    
     const obj = new Filme(
       inputsObj.titulo.value,
       Number(inputsObj.nota.value),
       Number(inputsObj.duracao.value),
-      inputsObj.imagem.value ? inputsObj.imagem.value : imagemAleatoria
+      dadosFilmeDinamico ? dadosFilmeDinamico.imagem : imagemAleatoria
     );
+
     filmes.push(obj);
     registraInformacaoStorage("filmes", filmes);
 
+    alert("Filme adicionado com sucesso!");
+    listarFilmes(filmes);
     limparInputs(
       inputsObj.titulo,
       inputsObj.duracao,
       inputsObj.nota,
-      inputsObj.imagem
     );
-    alert("Filme adicionado com sucesso!");
-    listarFilmes(filmes);
   }
-};
+}
 
-export const pesquisarFilmes = () => {
+export const pesquisarFilmes = (filmes, termo) => {
   return filmes.filter((filme) => {
     const nomeMinusculo = filme.titulo.toLowerCase();
-    const termoMinusculo = inputsObj.pesquisa.value.toLowerCase();
+    const termoMinusculo = termo.toLowerCase();
     return nomeMinusculo.includes(termoMinusculo);
   });
 };

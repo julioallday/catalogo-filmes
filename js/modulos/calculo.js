@@ -14,7 +14,6 @@ export const somaMinutosAssistidos = () => {
       return a + b;
     }, 0);
   const total = document.getElementById("total-assistido");
-  if(resultado)
     total.innerText = resultado;
   }
   
