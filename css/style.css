@@ -73,6 +73,16 @@ li {
 
 @media only screen and (min-width: 660px) {
   ul {
+    grid-template-columns: repeat(2, 0.5fr);
+  }
+
+  .pesquisa-titulo p {
+    text-align: center;
+    height: fit-content;
+  }
+}
+@media only screen and (min-width: 880px) {
+  ul {
     grid-template-columns: repeat(3, 0.5fr);
   }
 
