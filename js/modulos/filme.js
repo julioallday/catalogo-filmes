@@ -8,10 +8,7 @@ import { limparInputs } from "../utils/limpaInputs.js";
 import { registraInformacaoStorage } from "../utils/setStorage.js";
 import { somaMinutosAssistidos } from "./calculo.js";
 
-
-let espelhoFilmes = filmes;
-
-export const listarFilmes = (filmes) => {
+export const listarFilmes = () => {
   const section = document.getElementById("listagem");
   section.innerHTML = "";
   const ul = document.createElement("ul");
@@ -45,22 +42,24 @@ export const listarFilmes = (filmes) => {
                             ? componenteSvgAssistido("30px")
                             : componenteSvgNaoAssistido("30px")
                         }</a>
-                            <a id="${index}-favorito"><?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                            <a id="${index}-favorito"><?xml version="1.0" encoding="utf-8"?>
+                            <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo
+                             Mixer Tools -->
                             <svg width="20px" viewBox="0 0 24 24" fill=${
                               element.favorito ? "red" : "none"
                             } xmlns="http://www.w3.org/2000/svg">
                             <path d="M12.62 20.81C12.28 20.93 11.72
-                             20.93 11.38 20.81C8.48 19.82 2 15.69 2 
-                             8.68998C2 5.59998 4.49 3.09998 7.56
-                              3.09998C9.38 3.09998 10.99 3.97998 12 
-                              5.33998C13.01 3.97998 14.63 3.09998 
-                              16.44 3.09998C19.51 3.09998 22 5.59998
-                               22 8.68998C22 15.69 15.52 19.82 12.62
-                                20.81Z" stroke="${
-                                  element.favorito ? "gold" : "#c0c0c0"
-                                }" 
-                                stroke-width="1.5" stroke-linecap="round"
-                                 stroke-linejoin="round"/>
+                            20.93 11.38 20.81C8.48 19.82 2 15.69 2 
+                            8.68998C2 5.59998 4.49 3.09998 7.56
+                            3.09998C9.38 3.09998 10.99 3.97998 12 
+                            5.33998C13.01 3.97998 14.63 3.09998 
+                            16.44 3.09998C19.51 3.09998 22 5.59998
+                              22 8.68998C22 15.69 15.52 19.82 12.62
+                            20.81Z" stroke="${
+                              element.favorito ? "gold" : "#c0c0c0"
+                            }" 
+                            stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round"/>
                             </svg></a>
                         </div>
                     </div>`;
@@ -68,14 +67,14 @@ export const listarFilmes = (filmes) => {
     favoritar(element, index);
     assistir(element, index);
   });
-  registraInformacaoStorage("filmes", espelhoFilmes);
-}
+  registraInformacaoStorage("filmes", filmes);
+};
 
 export const mostrarTela = () => {
   botoesObj.cadastrar.onclick = cadastrarFilme;
 
   inputsObj.pesquisa.addEventListener("input", () => {
-    const filmesEncontrados = pesquisarFilmes(filmes, inputsObj.pesquisa.value);
+    const filmesEncontrados = pesquisarFilmes();
     const encontrouAlgumFilme = filmesEncontrados[0] ? true : false;
     if (!encontrouAlgumFilme) {
       alert("Não foi encontrado nenhum filme com esse titulo");
@@ -86,6 +85,7 @@ export const mostrarTela = () => {
       }, 500);
     }
   });
+  botoesObj.pesquisar.addEventListener("click", pesquisarFilmes);
   listarFilmes(filmes);
 };
 
@@ -116,16 +116,19 @@ export const favoritar = (element, index) => {
       `Filme ${index}`,
       `${element.favorito ? "foi curtido" : "foi descurtido"}`
     );
-    registraInformacaoStorage("filmes", espelhoFilmes);
-    listarFilmes(espelhoFilmes);
+    registraInformacaoStorage("filmes", filmes);
+    listarFilmes(filmes);
   });
-}
+};
 
 export const cadastrarFilme = () => {
   const tituloValido = validaTitulo(inputsObj.titulo.value);
-
+  const duracaoMaximaUltrapassada = Number(inputsObj.duracao.value) > 400;
   if (!tituloValido) {
     alert("Já possue um filme com o mesmo título!");
+  } else if (duracaoMaximaUltrapassada) {
+    alert("Duração máxima ultrapassada!");
+    limparInputs(inputsObj.duracao);
   } else {
     const obj = new Filme(
       inputsObj.titulo.value,
@@ -133,8 +136,8 @@ export const cadastrarFilme = () => {
       Number(inputsObj.duracao.value),
       inputsObj.imagem.value ? inputsObj.imagem.value : imagemAleatoria
     );
-    espelhoFilmes.push(obj);
-    registraInformacaoStorage("filmes", espelhoFilmes);
+    filmes.push(obj);
+    registraInformacaoStorage("filmes", filmes);
 
     limparInputs(
       inputsObj.titulo,
@@ -143,14 +146,14 @@ export const cadastrarFilme = () => {
       inputsObj.imagem
     );
     alert("Filme adicionado com sucesso!");
-    listarFilmes(espelhoFilmes);
+    listarFilmes(filmes);
   }
-}
+};
 
-export const pesquisarFilmes = (filmes, termo) => {
+export const pesquisarFilmes = () => {
   return filmes.filter((filme) => {
     const nomeMinusculo = filme.titulo.toLowerCase();
-    const termoMinusculo = termo.toLowerCase();
+    const termoMinusculo = inputsObj.pesquisa.value.toLowerCase();
     return nomeMinusculo.includes(termoMinusculo);
   });
 };
@@ -159,7 +162,7 @@ export const validaTitulo = (termo) => {
   return filmes.every(
     (element) => element.titulo.toLowerCase() != termo.toLowerCase()
   );
-}
+};
 
 const validaFavoritos = (filmes, termo) => {
   return filmes.filter((filme) => {
@@ -167,4 +170,4 @@ const validaFavoritos = (filmes, termo) => {
     const termoMinusculo = termo.toString();
     return nomeMinusculo.includes(termoMinusculo);
   });
-}
+};

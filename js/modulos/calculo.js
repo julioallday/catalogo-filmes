@@ -13,7 +13,8 @@ export const somaMinutosAssistidos = () => {
    let resultado = gerenciadorValor.reduce((a, b) => {
       return a + b;
     }, 0);
-    const total = document.getElementById("total-assistido");
+  const total = document.getElementById("total-assistido");
+  if(resultado)
     total.innerText = resultado;
   }
   
